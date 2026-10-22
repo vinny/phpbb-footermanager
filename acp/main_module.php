@@ -513,13 +513,15 @@ class main_module
 			$all_columns_list = $db->sql_fetchrowset($result);
 			$db->sql_freeresult($result);
 
-			$column_options = '';
 			$col_index = 1;
 			foreach ($all_columns_list as $row)
 			{
-				$selected = ($row['column_id'] == $block_data['column_id']) ? ' selected="selected"' : '';
-				$title_display = !empty($row['column_title']) ? $row['column_title'] : $language->lang('FOOTER_COLUMNS') . ' #' . $col_index;
-				$column_options .= '<option value="' . (int) $row['column_id'] . '"' . $selected . '>' . utf8_htmlspecialchars(htmlspecialchars_decode($title_display, ENT_COMPAT)) . '</option>';
+				$title_display = !empty($row['column_title']) ? html_entity_decode($row['column_title'], ENT_COMPAT, 'UTF-8') : $language->lang('FOOTER_COLUMNS') . ' #' . $col_index;
+				$template->assign_block_vars('column_options', [
+					'ID'       => (int) $row['column_id'],
+					'TITLE'    => $title_display,
+					'SELECTED' => (int) $row['column_id'] === (int) $block_data['column_id'],
+				]);
 				$col_index++;
 			}
 
@@ -606,7 +608,6 @@ class main_module
 				'S_EDIT_BLOCK'				=> true,
 				'BLOCK_FORM_TITLE'			=> $action === 'add_block' ? $language->lang('FOOTER_ADD_BLOCK') : $language->lang('FOOTER_EDIT_BLOCK'),
 				'BLOCK_TITLE'				=> $block_data['block_title'],
-				'COLUMN_OPTIONS'			=> $column_options,
 				'BLOCK_ENABLED'				=> (bool) $block_data['block_enabled'],
 				'S_PARSE_BBCODE'			=> (bool) $block_data['block_parse_bbcode'],
 				'BLOCK_CONTENT'				=> $block_content_text,

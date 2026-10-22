@@ -153,6 +153,29 @@
 	background: #ffffff;
 }
 
+.vfm-empty-col-icon {
+	display: block;
+	margin-bottom: 5px;
+	opacity: 0.5;
+}
+
+/* Status & action icon colors */
+.vfm-icon-enabled {
+	color: #228822;
+}
+
+.vfm-icon-disabled {
+	color: #bcbcbc;
+}
+
+.vfm-icon-add {
+	color: #2563eb;
+}
+
+.vfm-icon-delete {
+	color: #bc0000;
+}
+
 /* BBCode & HTML Editor styling */
 .vfm-bbcode-row {
 	margin-top: 10px;

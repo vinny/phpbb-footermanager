@@ -1,41 +1,13 @@
 <h1>{{ BLOCK_FORM_TITLE }}</h1>
 
 <script>
-/* exported form_name, text_name, load_draft, upload, imageTag, toggleBbcodePanel */
+/* exported form_name, text_name, load_draft, upload, imageTag */
 // <![CDATA[
 var form_name = 'acp_footermanager_block';
 var text_name = 'block_content';
 var load_draft = false;
 var upload = false;
 var imageTag = false;
-
-function toggleBbcodePanel(isBbcode) {
-	var bbcodePanel = document.getElementById('bbcode_controls_panel');
-	var htmlWarning = document.getElementById('trusted_html_warning');
-	var colorPalette = document.getElementById('color_palette_placeholder');
-	var contentDd = document.getElementById('block_content_dd');
-	var statusDd = document.getElementById('bbcode_status_dd');
-	var analyseBtn = document.getElementById('btn_analyse_html');
-
-	if (bbcodePanel) {
-		bbcodePanel.style.display = isBbcode ? 'block' : 'none';
-	}
-	if (htmlWarning) {
-		htmlWarning.style.display = isBbcode ? 'none' : 'block';
-	}
-	if (colorPalette) {
-		colorPalette.style.display = isBbcode ? 'block' : 'none';
-	}
-	if (contentDd) {
-		contentDd.style.marginLeft = isBbcode ? '90px' : '0px';
-	}
-	if (statusDd) {
-		statusDd.style.display = isBbcode ? 'block' : 'none';
-	}
-	if (analyseBtn) {
-		analyseBtn.style.display = isBbcode ? 'none' : 'inline-block';
-	}
-}
 // ]]>
 </script>
 
@@ -54,7 +26,9 @@ function toggleBbcodePanel(isBbcode) {
 			<dt><label for="column_id">{{ lang('FOOTER_BLOCK_COLUMN') }}{{ lang('COLON') }}</label></dt>
 			<dd>
 				<select id="column_id" name="column_id">
-					{{ COLUMN_OPTIONS|raw }}
+					{% for col in loops.column_options %}
+						<option value="{{ col.ID }}"{% if col.SELECTED %} selected="selected"{% endif %}>{{ col.TITLE }}</option>
+					{% endfor %}
 				</select>
 			</dd>
 		</dl>
@@ -79,7 +53,7 @@ function toggleBbcodePanel(isBbcode) {
 		<dl>
 			<dt><label for="block_content">{{ lang('BLOCK_CONTENT') }}{{ lang('COLON') }}</label><br /><span>{{ lang('BLOCK_CONTENT_EXPLAIN') }}</span></dt>
 			<dd>
-				<label><input type="checkbox" class="checkbox" id="block_parse_bbcode" name="block_parse_bbcode" value="1"{% if S_PARSE_BBCODE %} checked="checked"{% endif %} onclick="toggleBbcodePanel(this.checked);" /> {{ lang('PARSE_BBCODE') }}</label>
+				<label><input type="checkbox" class="checkbox" id="block_parse_bbcode" name="block_parse_bbcode" value="1"{% if S_PARSE_BBCODE %} checked="checked"{% endif %} /> {{ lang('PARSE_BBCODE') }}</label>
 			</dd>
 		</dl>
 

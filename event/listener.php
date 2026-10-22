@@ -280,7 +280,7 @@ class listener implements EventSubscriberInterface
 
 			foreach ($col_blocks as $b)
 			{
-				$rendered_content = $this->render_block_content($b, $column);
+				$rendered_content = $this->render_block_content($b);
 
 				$this->template->assign_block_vars('vfm_columns.vfm_blocks', [
 					'ID'		=> (int) $b['block_id'],
@@ -301,10 +301,9 @@ class listener implements EventSubscriberInterface
 	 * Process and render block content (BBCode or HTML)
 	 *
 	 * @param array $block
-	 * @param array $column
 	 * @return string
 	 */
-	protected function render_block_content(array $block, array $column)
+	protected function render_block_content(array $block)
 	{
 		$content = $block['block_content'];
 

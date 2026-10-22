@@ -59,30 +59,4 @@ class v100_data extends \phpbb\db\migration\migration
 			]],
 		];
 	}
-
-	/**
-	 * Reverts the database data
-	 *
-	 * @return array
-	 */
-	public function revert_data()
-	{
-		return [
-			['module.remove', [
-				'acp',
-				'ACP_VINNY_FOOTERMANAGER',
-				[
-					'module_basename'	=> '\vinny\footermanager\acp\main_module',
-					'modes'				=> ['settings'],
-				],
-			]],
-			['module.remove', [
-				'acp',
-				'ACP_CAT_DOT_MODS',
-				'ACP_VINNY_FOOTERMANAGER',
-			]],
-
-			['config.remove', ['vinny_footermanager_enable']],
-		];
-	}
 }

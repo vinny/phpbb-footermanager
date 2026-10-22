@@ -6,7 +6,15 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 
 ## [Unreleased]
 
+### Fixed
+- Replaced concatenated HTML `<option>` tags in PHP with native Twig block loops in the ACP block template.
+
 ### Changed
+- Replaced inline CSS styles on ACP action icons with dedicated CSS classes.
+- Moved inline BBCode panel toggle script and event handlers from the ACP block template into `acp_footermanager.js`.
+- Cleaned up duplicate AJAX callback registrations in `acp_footermanager.js`.
+- Removed redundant `revert_data()` from `v100_data` migration.
+- Removed unused `$column` parameter from `render_block_content()` in `listener.php`.
 - Refined column title alignment by removing redundant top margin from `.faq-title`.
 
 ## [1.0.0] - 2026-10-22

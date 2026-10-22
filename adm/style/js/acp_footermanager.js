@@ -12,9 +12,9 @@
 				if (res.success) {
 					var $el = $(this);
 					var $icon = $el.find('i.icon');
-					$icon.removeClass('fa-check-circle fa-times-circle')
-						.addClass(res.icon_class)
-						.css('color', res.icon_color)
+					$icon.removeClass('fa-check-circle fa-times-circle vfm-icon-enabled vfm-icon-disabled')
+						.addClass(res.icon_class + ' ' + (res.icon_color === '#228822' ? 'vfm-icon-enabled' : 'vfm-icon-disabled'))
+						.removeAttr('style')
 						.attr('title', res.title)
 						.attr('data-original-title', res.title);
 				}
@@ -27,20 +27,7 @@
 					$target.fadeOut(300, function() {
 						$target.remove();
 						if ($list.length && !$list.find('.vfm-block-card').length && !$list.find('.vfm-empty-col-drop').length) {
-							$list.append('<div class="vfm-empty-col-drop"><i class="icon fa-inbox fa-2x" style="display: block; margin-bottom: 5px; opacity: 0.5;"></i></div>');
-						}
-					});
-				}
-			});
-
-			phpbb.addAjaxCallback('vfm_row_delete', function(_res) {
-				var $target = $(this).closest('.vfm-block-card, .vfm-column-card, tr, li');
-				if ($target.length) {
-					var $list = $target.closest('.vfm-blocks-list');
-					$target.fadeOut(300, function() {
-						$target.remove();
-						if ($list.length && !$list.find('.vfm-block-card').length && !$list.find('.vfm-empty-col-drop').length) {
-							$list.append('<div class="vfm-empty-col-drop"><i class="icon fa-inbox fa-2x" style="display: block; margin-bottom: 5px; opacity: 0.5;"></i></div>');
+							$list.append('<div class="vfm-empty-col-drop"><i class="icon fa-inbox fa-2x vfm-empty-col-icon"></i></div>');
 						}
 					});
 				}
@@ -48,10 +35,26 @@
 		}
 	}
 
-	registerCallbacks();
-
 	$(function() {
 		registerCallbacks();
+
+		// BBCode panel toggle on block edit page
+		var $parseBbcode = $('#block_parse_bbcode');
+		if ($parseBbcode.length) {
+			var toggleBbcode = function(isBbcode) {
+				$('#bbcode_controls_panel').toggle(isBbcode);
+				$('#trusted_html_warning').toggle(!isBbcode);
+				$('#color_palette_placeholder').toggle(isBbcode);
+				var flow = document.documentElement.dir === 'rtl' ? 'margin-right' : 'margin-left';
+				$('#block_content_dd').css(flow, isBbcode ? '90px' : '0px');
+				$('#bbcode_status_dd').toggle(isBbcode);
+				$('#btn_analyse_html').toggle(!isBbcode);
+			};
+
+			$parseBbcode.on('change', function() {
+				toggleBbcode(this.checked);
+			});
+		}
 
 		var container = $('#vfm-blocks-data');
 		if (container.length) {
@@ -119,7 +122,7 @@
 						window.location.reload();
 					}
 				});
-			}
+			};
 
 			if (typeof Sortable !== 'undefined') {
 				$('.vfm-blocks-list').each(function() {

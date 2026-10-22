@@ -21,14 +21,14 @@
 				<div class="vfm-column-actions">
 					<a href="{{ col.U_TOGGLE_COL }}" data-ajax="vfm_toggle_enabled" title="{{ lang('FOOTER_COLUMN_ENABLED') }}">
 						{% if col.ENABLED %}
-							<i class="icon fa-check-circle" style="color: #228822;" title="{{ lang('ENABLED') }}"></i>
+							<i class="icon fa-check-circle vfm-icon-enabled" title="{{ lang('ENABLED') }}"></i>
 						{% else %}
-							<i class="icon fa-times-circle" style="color: #bcbcbc;" title="{{ lang('DISABLED') }}"></i>
+							<i class="icon fa-times-circle vfm-icon-disabled" title="{{ lang('DISABLED') }}"></i>
 						{% endif %}
 					</a>
-					<a href="{{ col.U_ADD_BLOCK }}" title="{{ lang('FOOTER_ADD_BLOCK') }}"><i class="icon fa-plus-circle" style="color: #2563eb;"></i></a>
+					<a href="{{ col.U_ADD_BLOCK }}" title="{{ lang('FOOTER_ADD_BLOCK') }}"><i class="icon fa-plus-circle vfm-icon-add"></i></a>
 					<a href="{{ col.U_EDIT_COL }}" title="{{ lang('FOOTER_EDIT_COLUMN') }}"><i class="icon fa-pencil"></i></a>
-					<a href="{{ col.U_DELETE_COL }}" data-ajax="row_delete" title="{{ lang('FOOTER_DELETE_COLUMN') }}"><i class="icon fa-trash" style="color: #bc0000;"></i></a>
+					<a href="{{ col.U_DELETE_COL }}" data-ajax="row_delete" title="{{ lang('FOOTER_DELETE_COLUMN') }}"><i class="icon fa-trash vfm-icon-delete"></i></a>
 				</div>
 			</div>
 
@@ -43,18 +43,18 @@
 					<div class="vfm-block-actions">
 						<a href="{{ block.U_TOGGLE }}" data-ajax="vfm_toggle_enabled" title="{{ lang('FOOTER_BLOCK_ENABLED') }}">
 							{% if block.ENABLED %}
-								<i class="icon fa-check-circle" style="color: #228822;" title="{{ lang('ENABLED') }}"></i>
+								<i class="icon fa-check-circle vfm-icon-enabled" title="{{ lang('ENABLED') }}"></i>
 							{% else %}
-								<i class="icon fa-times-circle" style="color: #bcbcbc;" title="{{ lang('DISABLED') }}"></i>
+								<i class="icon fa-times-circle vfm-icon-disabled" title="{{ lang('DISABLED') }}"></i>
 							{% endif %}
 						</a>
 						<a href="{{ block.U_EDIT }}" title="{{ lang('FOOTER_EDIT_BLOCK') }}"><i class="icon fa-pencil"></i></a>
-						<a href="{{ block.U_DELETE }}" data-ajax="row_delete" title="{{ lang('FOOTER_DELETE_BLOCK') }}"><i class="icon fa-trash" style="color: #bc0000;"></i></a>
+						<a href="{{ block.U_DELETE }}" data-ajax="row_delete" title="{{ lang('FOOTER_DELETE_BLOCK') }}"><i class="icon fa-trash vfm-icon-delete"></i></a>
 					</div>
 				</div>
 				{% else %}
 				<div class="vfm-empty-col-drop">
-					<i class="icon fa-inbox fa-2x" style="display: block; margin-bottom: 5px; opacity: 0.5;"></i>
+					<i class="icon fa-inbox fa-2x vfm-empty-col-icon"></i>
 					{{ lang('FOOTER_COLUMN_EMPTY') }}
 				</div>
 				{% endfor %}
