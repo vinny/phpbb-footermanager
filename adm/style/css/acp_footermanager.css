@@ -52,6 +52,9 @@
 
 .vfm-col-drag-handle,
 .vfm-block-drag-handle {
+	display: inline-block;
+	width: 16px;
+	text-align: center;
 	cursor: move;
 	color: #888888;
 	padding: 2px 4px;

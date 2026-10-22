@@ -27,7 +27,13 @@
 					$target.fadeOut(300, function() {
 						$target.remove();
 						if ($list.length && !$list.find('.vfm-block-card').length && !$list.find('.vfm-empty-col-drop').length) {
-							$list.append('<div class="vfm-empty-col-drop"><i class="icon fa-inbox fa-2x vfm-empty-col-icon"></i></div>');
+							var emptyText = $('#vfm-blocks-data').attr('data-empty-text') || '';
+							$list.append(
+								'<div class="vfm-empty-col-drop">' +
+									'<i class="icon fa-inbox fa-2x vfm-empty-col-icon"></i>' +
+									emptyText +
+								'</div>'
+							);
 						}
 					});
 				}
@@ -60,10 +66,61 @@
 		if (container.length) {
 			var updateOrderURL = container.attr('data-url');
 			var updateOrderHash = container.attr('data-hash');
+			var emptyText = container.attr('data-empty-text') || '';
 
 			if (updateOrderURL && updateOrderURL.indexOf('&amp;') !== -1) {
 				updateOrderURL = updateOrderURL.replace(/&amp;/g, '&');
 			}
+
+			var showHandleFeedback = function($handle, isSuccess) {
+				if (!$handle || !$handle.length) {
+					return;
+				}
+
+				var $icon = $handle.is('i.icon') ? $handle : $handle.find('i.icon');
+				if (!$icon.length) {
+					return;
+				}
+
+				clearTimeout($icon.data('vfm-feedback-timer'));
+
+				var feedbackClass = isSuccess ? 'fa-check vfm-icon-enabled' : 'fa-times vfm-icon-delete';
+
+				$icon.stop(true, true).fadeOut(150, function() {
+					$icon.removeClass('fa-arrows fa-check fa-times vfm-icon-enabled vfm-icon-delete')
+						.addClass(feedbackClass)
+						.fadeIn(150);
+
+					var timer = setTimeout(function() {
+						$icon.stop(true, true).fadeOut(200, function() {
+							$icon.removeClass('fa-check fa-times vfm-icon-enabled vfm-icon-delete')
+								.addClass('fa-arrows')
+								.fadeIn(200);
+						});
+					}, 1500);
+
+					$icon.data('vfm-feedback-timer', timer);
+				});
+			};
+
+			var updateEmptyColumnsState = function() {
+				$('.vfm-blocks-list').each(function() {
+					var $list = $(this);
+					var hasBlocks = $list.find('.vfm-block-card').length > 0;
+					var $empty = $list.find('.vfm-empty-col-drop');
+
+					if (hasBlocks && $empty.length) {
+						$empty.remove();
+					} else if (!hasBlocks && !$empty.length) {
+						$list.append(
+							'<div class="vfm-empty-col-drop">' +
+								'<i class="icon fa-inbox fa-2x vfm-empty-col-icon"></i>' +
+								emptyText +
+							'</div>'
+						);
+					}
+				});
+			};
 
 			// Sortable for columns
 			var columnsGrid = document.querySelector('.vfm-columns-grid');
@@ -73,7 +130,8 @@
 					handle: '.vfm-col-drag-handle',
 					draggable: '.vfm-column-card',
 					ghostClass: 'vfm-sortable-ghost',
-					onEnd: function() {
+					onEnd: function(evt) {
+						var $handle = $(evt.item).find('.vfm-col-drag-handle');
 						var columnIds = [];
 						$('.vfm-column-card[data-col-id]').each(function() {
 							columnIds.push($(this).data('col-id'));
@@ -87,8 +145,15 @@
 								columns_order: JSON.stringify(columnIds),
 								hash: updateOrderHash
 							},
-							success: function() {
-								window.location.reload();
+							success: function(res) {
+								if (res && res.success) {
+									showHandleFeedback($handle, true);
+								} else {
+									showHandleFeedback($handle, false);
+								}
+							},
+							error: function() {
+								showHandleFeedback($handle, false);
 							}
 						});
 					}
@@ -96,7 +161,10 @@
 			}
 
 			// Sortable for blocks
-			var saveBlockOrder = function() {
+			var saveBlockOrder = function(evt) {
+				updateEmptyColumnsState();
+
+				var $handle = evt && evt.item ? $(evt.item).find('.vfm-block-drag-handle') : null;
 				var orderData = {};
 
 				$('.vfm-blocks-list').each(function() {
@@ -118,8 +186,15 @@
 						order: JSON.stringify(orderData),
 						hash: updateOrderHash
 					},
-					success: function() {
-						window.location.reload();
+					success: function(res) {
+						if (res && res.success) {
+							showHandleFeedback($handle, true);
+						} else {
+							showHandleFeedback($handle, false);
+						}
+					},
+					error: function() {
+						showHandleFeedback($handle, false);
 					}
 				});
 			};
@@ -133,7 +208,9 @@
 						draggable: '.vfm-block-card',
 						filter: '.vfm-empty-col-drop',
 						ghostClass: 'vfm-sortable-ghost',
-						onEnd: saveBlockOrder
+						onEnd: function(evt) {
+							saveBlockOrder(evt);
+						}
 					});
 				});
 			}
