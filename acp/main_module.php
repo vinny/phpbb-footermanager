@@ -416,7 +416,13 @@ class main_module
 				}
 
 				$hide_groups_arr = $request->variable('block_hide_groups', [0]);
-				$hide_groups_arr = array_filter($hide_groups_arr, function($g) { return (int) $g > 0; });
+				$hide_groups_arr = array_filter(
+					$hide_groups_arr,
+					function ($g)
+					{
+						return (int) $g > 0;
+					}
+				);
 				$hide_groups_str = !empty($hide_groups_arr) ? implode(',', $hide_groups_arr) : '';
 
 				if ($block_title === '')
