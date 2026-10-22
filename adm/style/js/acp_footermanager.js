@@ -29,10 +29,9 @@
 						if ($list.length && !$list.find('.vfm-block-card').length && !$list.find('.vfm-empty-col-drop').length) {
 							var emptyText = $('#vfm-blocks-data').attr('data-empty-text') || '';
 							$list.append(
-								'<div class="vfm-empty-col-drop">' +
-									'<i class="icon fa-inbox fa-2x vfm-empty-col-icon"></i>' +
-									emptyText +
-								'</div>'
+								$('<div class="vfm-empty-col-drop">')
+									.append('<i class="icon fa-inbox fa-2x vfm-empty-col-icon"></i>')
+									.append(document.createTextNode(emptyText))
 							);
 						}
 					});
@@ -113,10 +112,9 @@
 						$empty.remove();
 					} else if (!hasBlocks && !$empty.length) {
 						$list.append(
-							'<div class="vfm-empty-col-drop">' +
-								'<i class="icon fa-inbox fa-2x vfm-empty-col-icon"></i>' +
-								emptyText +
-							'</div>'
+							$('<div class="vfm-empty-col-drop">')
+								.append('<i class="icon fa-inbox fa-2x vfm-empty-col-icon"></i>')
+								.append(document.createTextNode(emptyText))
 						);
 					}
 				});
