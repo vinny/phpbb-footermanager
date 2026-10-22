@@ -23,6 +23,7 @@
 /stylelint.config.js export-ignore
 /phpunit.xml.dist export-ignore
 /README.md export-ignore
+/CHANGELOG.md export-ignore
 /package.json export-ignore
 /package-lock.json export-ignore
 /composer.lock export-ignore
