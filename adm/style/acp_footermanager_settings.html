@@ -1,0 +1,44 @@
+{% INCLUDE 'overall_header.html' %}
+{% INCLUDECSS '@vinny_footermanager/css/acp_footermanager.css' %}
+
+<a id="maincontent"></a>
+
+{% if S_EDIT_COLUMN %}
+	{% INCLUDE '@vinny_footermanager/acp_footermanager_column.html' %}
+{% elseif S_EDIT_BLOCK %}
+	{% INCLUDE '@vinny_footermanager/acp_footermanager_block.html' %}
+{% else %}
+	<h1>{{ lang('ACP_VINNY_FOOTERMANAGER_SETTINGS') }}</h1>
+
+	<p>{{ lang('ACP_VINNY_FOOTERMANAGER_EXPLAIN') }}</p>
+	<p>
+		{{ lang('FOOTERMANAGER_SUPPORT_STAR')|raw }}<br />
+		{{ lang('FOOTERMANAGER_SUPPORT_DONATE')|raw }}
+	</p>
+
+	<form id="acp_footermanager_settings" method="post" action="{{ U_ACTION }}">
+		<fieldset>
+			<legend>{{ lang('SETTINGS') }}</legend>
+
+			<dl>
+				<dt><label for="vinny_footermanager_enable">{{ lang('FOOTER_ENABLE') }}{{ lang('COLON') }}</label><br /><span>{{ lang('FOOTER_ENABLE_EXPLAIN') }}</span></dt>
+				<dd>
+					<label><input type="radio" class="radio" name="vinny_footermanager_enable" value="1"{% if VINNY_FOOTERMANAGER_ENABLE %} id="vinny_footermanager_enable" checked="checked"{% endif %} /> {{ lang('YES') }}</label>
+					<label><input type="radio" class="radio" name="vinny_footermanager_enable" value="0"{% if not VINNY_FOOTERMANAGER_ENABLE %} id="vinny_footermanager_enable" checked="checked"{% endif %} /> {{ lang('NO') }}</label>
+				</dd>
+			</dl>
+		</fieldset>
+
+		<fieldset class="submit-buttons">
+			<input class="button1" type="submit" id="submit_settings" name="submit_settings" value="{{ lang('SUBMIT') }}" />&nbsp;
+			<input class="button2" type="reset" id="reset" name="reset" value="{{ lang('RESET') }}" />
+			{{ S_FORM_TOKEN }}
+		</fieldset>
+	</form>
+
+	{% INCLUDE '@vinny_footermanager/acp_footermanager_blocks.html' %}
+{% endif %}
+
+{% INCLUDEJS '@vinny_footermanager/js/Sortable.min.js' %}
+{% INCLUDEJS '@vinny_footermanager/js/acp_footermanager.js' %}
+{% INCLUDE 'overall_footer.html' %}

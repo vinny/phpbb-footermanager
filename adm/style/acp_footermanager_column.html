@@ -1,0 +1,42 @@
+<h1>{{ COLUMN_FORM_TITLE }}</h1>
+
+<a href="{{ U_BACK }}" class="vfm-back-link">&laquo; {{ lang('BACK') }}</a>
+
+<form id="acp_footermanager_column" method="post" action="{{ U_ACTION }}">
+	<fieldset>
+		<legend>{{ COLUMN_FORM_TITLE }}</legend>
+
+		<dl>
+			<dt><label for="column_title">{{ lang('FOOTER_COLUMN_TITLE') }}{{ lang('COLON') }}</label><br /><span>{{ lang('FOOTER_COLUMN_TITLE_EXPLAIN') }}</span></dt>
+			<dd><input type="text" id="column_title" name="column_title" value="{{ COLUMN_TITLE }}" maxlength="255" size="40" /></dd>
+		</dl>
+
+		<dl>
+			<dt><label for="column_width">{{ lang('FOOTER_COLUMN_WIDTH') }}{{ lang('COLON') }}</label><br /><span>{{ lang('FOOTER_COLUMN_WIDTH_EXPLAIN') }}</span></dt>
+			<dd>
+				<select id="column_width" name="column_width">
+					<option value="auto"{% if COLUMN_WIDTH == 'auto' %} selected="selected"{% endif %}>{{ lang('FOOTER_WIDTH_AUTO') }}</option>
+					<option value="1/4"{% if COLUMN_WIDTH == '1/4' %} selected="selected"{% endif %}>{{ lang('FOOTER_WIDTH_1_4') }}</option>
+					<option value="1/3"{% if COLUMN_WIDTH == '1/3' %} selected="selected"{% endif %}>{{ lang('FOOTER_WIDTH_1_3') }}</option>
+					<option value="1/2"{% if COLUMN_WIDTH == '1/2' %} selected="selected"{% endif %}>{{ lang('FOOTER_WIDTH_1_2') }}</option>
+					<option value="2/3"{% if COLUMN_WIDTH == '2/3' %} selected="selected"{% endif %}>{{ lang('FOOTER_WIDTH_2_3') }}</option>
+					<option value="3/4"{% if COLUMN_WIDTH == '3/4' %} selected="selected"{% endif %}>{{ lang('FOOTER_WIDTH_3_4') }}</option>
+				</select>
+			</dd>
+		</dl>
+
+		<dl>
+			<dt><label for="column_enabled">{{ lang('FOOTER_COLUMN_ENABLED') }}{{ lang('COLON') }}</label></dt>
+			<dd>
+				<label><input type="radio" class="radio" name="column_enabled" value="1"{% if COLUMN_ENABLED %} id="column_enabled" checked="checked"{% endif %} /> {{ lang('YES') }}</label>
+				<label><input type="radio" class="radio" name="column_enabled" value="0"{% if not COLUMN_ENABLED %} id="column_enabled" checked="checked"{% endif %} /> {{ lang('NO') }}</label>
+			</dd>
+		</dl>
+	</fieldset>
+
+	<fieldset class="submit-buttons">
+		<input class="button1" type="submit" id="submit" name="submit" value="{{ lang('SUBMIT') }}" />&nbsp;
+		<input class="button2" type="reset" id="reset" name="reset" value="{{ lang('RESET') }}" />
+		{{ S_FORM_TOKEN }}
+	</fieldset>
+</form>

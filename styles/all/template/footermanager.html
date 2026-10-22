@@ -1,0 +1,23 @@
+<div id="vfm-footer" class="vfm-footer" role="contentinfo">
+	<div class="vfm-grid{% if S_VFM_CUSTOM_WIDTHS %} vfm-grid-12{% else %} vfm-cols-{{ VFM_TOTAL_VISIBLE_COLUMNS }}{% endif %}">
+		{% for col in loops.vfm_columns %}
+			<div class="vfm-column{% if S_VFM_CUSTOM_WIDTHS %} vfm-col-span-{{ col.SPAN }}{% endif %} panel bg2" data-col-id="{{ col.ID }}">
+				<div class="inner">
+					<div class="content">
+						{% if col.TITLE %}
+							<h2 class="faq-title">{{ col.TITLE }}</h2>
+						{% endif %}
+
+						{% for block in col.vfm_blocks %}
+							<div class="vfm-block" data-block-id="{{ block.ID }}">
+								<div class="vfm-block-content">
+									{{ block.CONTENT|raw }}
+								</div>
+							</div>
+						{% endfor %}
+					</div>
+				</div>
+			</div>
+		{% endfor %}
+	</div>
+</div>

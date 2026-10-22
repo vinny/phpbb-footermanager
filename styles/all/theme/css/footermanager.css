@@ -1,0 +1,97 @@
+/**
+ * Footer Manager for phpBB
+ * Copyright (c) 2026 Vinny
+ * Clean prosilver-native layout
+ */
+
+/* Main Container */
+.vfm-footer {
+	margin-left: -10px;
+	margin-right: -10px;
+	margin-bottom: 15px;
+	padding-bottom: 15px;
+	border-bottom: 1px solid #CCCCCC;
+	clear: both;
+	text-align: left;
+}
+
+.rtl .vfm-footer {
+	text-align: right;
+}
+
+/* Grid Layout */
+.vfm-grid {
+	display: grid;
+	gap: 10px;
+	align-items: stretch;
+}
+
+.vfm-column.panel {
+	margin-bottom: 0;
+}
+
+.vfm-column .faq-title {
+	margin-top: 0.2em;
+}
+
+/* Block content styling matching prosilver FAQ */
+.vfm-block {
+	font-size: 1.2em;
+	line-height: 1.4em;
+	margin-bottom: 0.8em;
+}
+
+.vfm-block:last-child {
+	margin-bottom: 0;
+}
+
+.vfm-block p {
+	font-size: 1em;
+	margin-bottom: 0.8em;
+}
+
+.vfm-block dl.faq {
+	font-size: 1em;
+	margin-top: 0.5em;
+	margin-bottom: 0.5em;
+}
+
+/* Equal Columns (when all columns are set to auto) */
+.vfm-cols-1 { grid-template-columns: 1fr; }
+.vfm-cols-2 { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+.vfm-cols-3 { grid-template-columns: repeat(3, minmax(0, 1fr)); }
+.vfm-cols-4 { grid-template-columns: repeat(4, minmax(0, 1fr)); }
+.vfm-cols-5 { grid-template-columns: repeat(5, minmax(0, 1fr)); }
+.vfm-cols-6 { grid-template-columns: repeat(6, minmax(0, 1fr)); }
+.vfm-cols-7 { grid-template-columns: repeat(7, minmax(0, 1fr)); }
+.vfm-cols-8 { grid-template-columns: repeat(8, minmax(0, 1fr)); }
+
+/* 12-Track Grid (when fractional column widths are configured) */
+.vfm-grid-12 {
+	grid-template-columns: repeat(12, minmax(0, 1fr));
+}
+
+.vfm-col-span-1  { grid-column: span 1; }
+.vfm-col-span-2  { grid-column: span 2; }
+.vfm-col-span-3  { grid-column: span 3; }  /* 1/4 (25%) */
+.vfm-col-span-4  { grid-column: span 4; }  /* 1/3 (33.3%) */
+.vfm-col-span-5  { grid-column: span 5; }
+.vfm-col-span-6  { grid-column: span 6; }  /* 1/2 (50%) */
+.vfm-col-span-7  { grid-column: span 7; }
+.vfm-col-span-8  { grid-column: span 8; }  /* 2/3 (66.6%) */
+.vfm-col-span-9  { grid-column: span 9; }  /* 3/4 (75%) */
+.vfm-col-span-10 { grid-column: span 10; }
+.vfm-col-span-11 { grid-column: span 11; }
+.vfm-col-span-12 { grid-column: span 12; }
+
+@media (max-width: 768px) {
+	.vfm-grid,
+	.vfm-grid.vfm-grid-12 {
+		grid-template-columns: 1fr !important;
+		gap: 8px;
+	}
+
+	.vfm-column {
+		grid-column: span 1 !important;
+	}
+}

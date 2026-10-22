@@ -1,0 +1,160 @@
+<h1>{{ BLOCK_FORM_TITLE }}</h1>
+
+<script>
+/* exported form_name, text_name, load_draft, upload, imageTag, toggleBbcodePanel */
+// <![CDATA[
+var form_name = 'acp_footermanager_block';
+var text_name = 'block_content';
+var load_draft = false;
+var upload = false;
+var imageTag = false;
+
+function toggleBbcodePanel(isBbcode) {
+	var bbcodePanel = document.getElementById('bbcode_controls_panel');
+	var htmlWarning = document.getElementById('trusted_html_warning');
+	var colorPalette = document.getElementById('color_palette_placeholder');
+	var contentDd = document.getElementById('block_content_dd');
+	var statusDd = document.getElementById('bbcode_status_dd');
+	var analyseBtn = document.getElementById('btn_analyse_html');
+
+	if (bbcodePanel) {
+		bbcodePanel.style.display = isBbcode ? 'block' : 'none';
+	}
+	if (htmlWarning) {
+		htmlWarning.style.display = isBbcode ? 'none' : 'block';
+	}
+	if (colorPalette) {
+		colorPalette.style.display = isBbcode ? 'block' : 'none';
+	}
+	if (contentDd) {
+		contentDd.style.marginLeft = isBbcode ? '90px' : '0px';
+	}
+	if (statusDd) {
+		statusDd.style.display = isBbcode ? 'block' : 'none';
+	}
+	if (analyseBtn) {
+		analyseBtn.style.display = isBbcode ? 'none' : 'inline-block';
+	}
+}
+// ]]>
+</script>
+
+<a href="{{ U_BACK }}" class="vfm-back-link">&laquo; {{ lang('BACK') }}</a>
+
+<form id="acp_footermanager_block" method="post" action="{{ U_ACTION }}">
+	<fieldset>
+		<legend>{{ BLOCK_FORM_TITLE }}</legend>
+
+		<dl>
+			<dt><label for="block_title">{{ lang('FOOTER_BLOCK_NAME') }}{{ lang('COLON') }}</label></dt>
+			<dd><input type="text" id="block_title" name="block_title" value="{{ BLOCK_TITLE }}" maxlength="255" size="40" required="required" /></dd>
+		</dl>
+
+		<dl>
+			<dt><label for="column_id">{{ lang('FOOTER_BLOCK_COLUMN') }}{{ lang('COLON') }}</label></dt>
+			<dd>
+				<select id="column_id" name="column_id">
+					{{ COLUMN_OPTIONS|raw }}
+				</select>
+			</dd>
+		</dl>
+
+		<dl>
+			<dt><label for="block_enabled">{{ lang('FOOTER_BLOCK_ENABLED') }}{{ lang('COLON') }}</label></dt>
+			<dd>
+				<label><input type="radio" class="radio" name="block_enabled" value="1"{% if BLOCK_ENABLED %} id="block_enabled" checked="checked"{% endif %} /> {{ lang('YES') }}</label>
+				<label><input type="radio" class="radio" name="block_enabled" value="0"{% if not BLOCK_ENABLED %} id="block_enabled" checked="checked"{% endif %} /> {{ lang('NO') }}</label>
+			</dd>
+		</dl>
+
+		<dl>
+			<dt><label>{{ lang('FOOTER_HIDE_FOR_GROUPS') }}{{ lang('COLON') }}</label><br /><span>{{ lang('FOOTER_HIDE_FOR_GROUPS_EXPLAIN') }}</span></dt>
+			<dd>
+				{% for group in loops.groups %}
+					<label><input type="checkbox" name="block_hide_groups[]" value="{{ group.ID }}"{% if group.S_SELECTED %} checked="checked"{% endif %} /> {{ group.NAME }}</label><br />
+				{% endfor %}
+			</dd>
+		</dl>
+
+		<dl>
+			<dt><label for="block_content">{{ lang('BLOCK_CONTENT') }}{{ lang('COLON') }}</label><br /><span>{{ lang('BLOCK_CONTENT_EXPLAIN') }}</span></dt>
+			<dd>
+				<label><input type="checkbox" class="checkbox" id="block_parse_bbcode" name="block_parse_bbcode" value="1"{% if S_PARSE_BBCODE %} checked="checked"{% endif %} onclick="toggleBbcodePanel(this.checked);" /> {{ lang('PARSE_BBCODE') }}</label>
+			</dd>
+		</dl>
+
+		<p class="warningbox" id="trusted_html_warning"{% if S_PARSE_BBCODE %} style="display: none;"{% endif %}>{{ lang('BLOCK_TRUSTED_HTML_WARNING') }}</p>
+
+		<div id="bbcode_controls_panel"{% if not S_PARSE_BBCODE %} style="display: none;"{% endif %}>
+			{% INCLUDE 'acp_posting_buttons.html' %}
+		</div>
+
+		<dl class="responsive-columns vfm-bbcode-row">
+			<dt class="color-palette-dt"{% if not S_PARSE_BBCODE %} style="display: none;"{% endif %} id="color_palette_placeholder" data-color-palette="v" data-height="12" data-width="15" data-bbcode="true">
+			</dt>
+			<dd id="block_content_dd" style="margin-{{ S_CONTENT_FLOW_BEGIN }}: {% if S_PARSE_BBCODE %}90px{% else %}0{% endif %};">
+				<textarea id="block_content" name="block_content" rows="10" cols="60" class="vfm-content-textarea" onselect="storeCaret(this);" onclick="storeCaret(this);" onkeyup="storeCaret(this);" onfocus="initInsertions();" data-bbcode="true" required="required">{{ BLOCK_CONTENT }}</textarea>
+			</dd>
+			<dd id="bbcode_status_dd" class="vfm-status-dd" style="margin-{{ S_CONTENT_FLOW_BEGIN }}: {% if S_PARSE_BBCODE %}90px{% else %}0{% endif %};{% if not S_PARSE_BBCODE %} display: none;{% endif %}">
+				<small>{{ BBCODE_STATUS|raw }} :: {{ IMG_STATUS|raw }} :: {{ FLASH_STATUS|raw }} :: {{ URL_STATUS|raw }} :: {{ SMILIES_STATUS|raw }}</small>
+			</dd>
+		</dl>
+	</fieldset>
+
+	{% if S_BLOCK_ANALYSIS %}
+		<fieldset>
+			<legend>{{ lang('BLOCK_ANALYSIS') }}</legend>
+			{% for result in loops.analysis_results %}
+				<p class="{{ result.CLASS }}">{{ result.MESSAGE }}</p>
+			{% endfor %}
+		</fieldset>
+	{% endif %}
+
+	{% if S_BLOCK_PREVIEW %}
+		<fieldset>
+			<legend>{{ lang('FOOTER_LIVE_PREVIEW') }}</legend>
+			<p class="quick">{{ lang('FOOTER_PREVIEW_EXPLAIN') }}</p>
+			<div class="vfm-preview-container">
+				<div class="vfm-preview-grid{% if S_PREVIEW_CUSTOM_WIDTHS %} vfm-grid-12{% else %} vfm-cols-{{ PREVIEW_TOTAL_COLUMNS }}{% endif %}">
+					{% for pcol in loops.preview_columns %}
+						{% if pcol.IS_TARGET %}
+							<div class="vfm-preview-col-active{% if S_PREVIEW_CUSTOM_WIDTHS %} vfm-col-span-{{ pcol.SPAN }}{% endif %}">
+								<h3 class="vfm-preview-col-title">
+									<span>{{ pcol.TITLE }}</span>
+									<span class="vfm-preview-badge">{{ lang('ACTIVE') }}</span>
+								</h3>
+								<div class="vfm-preview-content">
+									{{ BLOCK_PREVIEW|raw }}
+								</div>
+							</div>
+						{% else %}
+							<div class="vfm-preview-col-ghost{% if S_PREVIEW_CUSTOM_WIDTHS %} vfm-col-span-{{ pcol.SPAN }}{% endif %}" title="{{ pcol.TITLE }} ({{ pcol.WIDTH }})">
+								<h3 class="vfm-preview-col-title">{{ pcol.TITLE }}</h3>
+								<div class="vfm-preview-ghost-lines">
+									<div class="vfm-preview-ghost-line w-80"></div>
+									<div class="vfm-preview-ghost-line w-60"></div>
+									<div class="vfm-preview-ghost-line w-90"></div>
+									<div class="vfm-preview-ghost-line w-40"></div>
+								</div>
+							</div>
+						{% endif %}
+					{% else %}
+						<div class="vfm-preview-block">
+							<div class="vfm-preview-block-content">
+								{{ BLOCK_PREVIEW|raw }}
+							</div>
+						</div>
+					{% endfor %}
+				</div>
+			</div>
+		</fieldset>
+	{% endif %}
+
+	<fieldset class="submit-buttons">
+		<input class="button1" type="submit" id="submit" name="submit" value="{{ lang('SUBMIT') }}" />&nbsp;
+		<input class="button2" type="submit" id="btn_analyse_html" name="analyse" value="{{ lang('BLOCK_ANALYSE_HTML') }}"{% if S_PARSE_BBCODE %} style="display: none;"{% endif %} />&nbsp;
+		<input class="button2" type="submit" name="preview" value="{{ lang('BLOCK_PREVIEW') }}" />&nbsp;
+		<input class="button2" type="reset" id="reset" name="reset" value="{{ lang('RESET') }}" />
+		{{ S_FORM_TOKEN }}
+	</fieldset>
+</form>

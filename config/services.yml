@@ -1,0 +1,12 @@
+services:
+    vinny.footermanager.listener:
+        class: vinny\footermanager\event\listener
+        arguments:
+            - '@template'
+            - '@user'
+            - '@config'
+            - '@dbal.conn'
+            - '%core.table_prefix%'
+            - '@cache.driver'
+        tags:
+            - { name: event.listener }

@@ -1,0 +1,67 @@
+<fieldset>
+	<legend>{{ lang('ACP_VINNY_FOOTERMANAGER_BLOCKS') }}</legend>
+	<p>{{ lang('FOOTER_BLOCKS_EXPLAIN') }}</p>
+
+	{% if S_CAN_ADD_COLUMN %}
+		<fieldset class="quick">
+			<a href="{{ U_ADD_COLUMN }}" class="button2"><i class="icon fa-plus"></i> {{ lang('FOOTER_ADD_COLUMN') }}</a>
+		</fieldset>
+	{% endif %}
+
+	<div id="vfm-blocks-data" data-url="{{ U_UPDATE_ORDER }}" data-hash="{{ HASH_UPDATE_ORDER }}"></div>
+
+	<div class="vfm-columns-grid">
+		{% for col in loops.columns %}
+		<div class="vfm-column-card" data-col-id="{{ col.ID }}">
+			<div class="vfm-column-header">
+				<div class="vfm-column-header-title">
+					<span class="vfm-col-drag-handle" title="{{ lang('FOOTER_DRAG_DROP_COL_HINT') }}"><i class="icon fa-arrows"></i></span>
+					<strong>{{ col.TITLE }}</strong>
+				</div>
+				<div class="vfm-column-actions">
+					<a href="{{ col.U_TOGGLE_COL }}" data-ajax="vfm_toggle_enabled" title="{{ lang('FOOTER_COLUMN_ENABLED') }}">
+						{% if col.ENABLED %}
+							<i class="icon fa-check-circle" style="color: #228822;" title="{{ lang('ENABLED') }}"></i>
+						{% else %}
+							<i class="icon fa-times-circle" style="color: #bcbcbc;" title="{{ lang('DISABLED') }}"></i>
+						{% endif %}
+					</a>
+					<a href="{{ col.U_ADD_BLOCK }}" title="{{ lang('FOOTER_ADD_BLOCK') }}"><i class="icon fa-plus-circle" style="color: #2563eb;"></i></a>
+					<a href="{{ col.U_EDIT_COL }}" title="{{ lang('FOOTER_EDIT_COLUMN') }}"><i class="icon fa-pencil"></i></a>
+					<a href="{{ col.U_DELETE_COL }}" data-ajax="row_delete" title="{{ lang('FOOTER_DELETE_COLUMN') }}"><i class="icon fa-trash" style="color: #bc0000;"></i></a>
+				</div>
+			</div>
+
+			<div class="vfm-blocks-list" data-column-id="{{ col.ID }}">
+				{% for block in col.blocks %}
+				<div class="vfm-block-card" data-id="{{ block.ID }}">
+					<div class="vfm-block-info">
+						<span class="vfm-block-drag-handle" title="{{ lang('FOOTER_DRAG_DROP_HINT') }}"><i class="icon fa-arrows"></i></span>
+						<span class="vfm-block-name">{{ block.TITLE }}</span>
+					</div>
+
+					<div class="vfm-block-actions">
+						<a href="{{ block.U_TOGGLE }}" data-ajax="vfm_toggle_enabled" title="{{ lang('FOOTER_BLOCK_ENABLED') }}">
+							{% if block.ENABLED %}
+								<i class="icon fa-check-circle" style="color: #228822;" title="{{ lang('ENABLED') }}"></i>
+							{% else %}
+								<i class="icon fa-times-circle" style="color: #bcbcbc;" title="{{ lang('DISABLED') }}"></i>
+							{% endif %}
+						</a>
+						<a href="{{ block.U_EDIT }}" title="{{ lang('FOOTER_EDIT_BLOCK') }}"><i class="icon fa-pencil"></i></a>
+						<a href="{{ block.U_DELETE }}" data-ajax="row_delete" title="{{ lang('FOOTER_DELETE_BLOCK') }}"><i class="icon fa-trash" style="color: #bc0000;"></i></a>
+					</div>
+				</div>
+				{% else %}
+				<div class="vfm-empty-col-drop">
+					<i class="icon fa-inbox fa-2x" style="display: block; margin-bottom: 5px; opacity: 0.5;"></i>
+					{{ lang('FOOTER_COLUMN_EMPTY') }}
+				</div>
+				{% endfor %}
+			</div>
+		</div>
+		{% else %}
+		<p>{{ lang('FOOTER_BLOCK_EMPTY') }}</p>
+		{% endfor %}
+	</div>
+</fieldset>
