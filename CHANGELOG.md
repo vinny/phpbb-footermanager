@@ -12,6 +12,9 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 ### Fixed
 - Replaced concatenated HTML `<option>` tags in PHP with native Twig block loops in the ACP block template.
 
+### Security
+- Prevented potential DOM-based XSS in the ACP by creating empty-column state labels safely via `document.createTextNode()`.
+
 ### Changed
 - Made column and block drag-and-drop reordering fully asynchronous by removing full page reloads and managing empty column states dynamically in the DOM.
 - Replaced inline CSS styles on ACP action icons with dedicated CSS classes.
