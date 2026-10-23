@@ -10,3 +10,21 @@ services:
             - '@cache.driver'
         tags:
             - { name: event.listener }
+
+    vinny.footermanager.controller.acp:
+        class: vinny\footermanager\controller\acp_controller
+        arguments:
+            - '@auth'
+            - '@cache.driver'
+            - '@config'
+            - '@controller.helper'
+            - '@dbal.conn'
+            - '@group_helper'
+            - '@language'
+            - '@log'
+            - '@request'
+            - '@template'
+            - '@user'
+            - '%core.root_path%'
+            - '%core.php_ext%'
+            - '%core.table_prefix%'
